@@ -1,0 +1,69 @@
+---
+import WriterProfileSmall from './writerProfileSmall.astro'
+import Tags from './Tags.astro'
+export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
+
+const { posts } = Astro.props
+---
+
+<style>
+    ul {
+        list-style-type: none;
+        padding: unset;
+    }
+    ul li {
+        display: grid;
+    }
+    ul li time {
+        flex: 0 0 130px;
+        font-style: italic;
+        color: #595959;
+    }
+    ul li a {
+        color: #333333;
+        font-size: 18px;
+        font-weight: bolder;
+        text-decoration: none;
+        border-radius: 10px;
+    }
+    ul li a:hover {
+        background-color: #dddddd;
+    }
+    ul li a:visited {
+        color: #8e32dc;
+    }
+    ul li span {
+        padding: 0 5px;
+    }
+    .title_section {
+        padding: 4px 0px;
+    }
+</style>
+<ul>
+    {
+        posts.map((post) => (
+            <li>
+                <div class="title_section">
+                    <a href={post.url}>
+                        <span class="capital">[{post.frontmatter.stack}]</span>
+                        {post.frontmatter.title}
+                    </a>
+                </div>
+                <div class="meta_section">
+                    <WriterProfileSmall writer={post.frontmatter.writer} />
+                    <time datetime={post.frontmatter.pubDate}>
+                        {new Date(post.frontmatter.pubDate).toLocaleDateString(
+                            'kr-KR',
+                            {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: 'numeric',
+                            }
+                        )}
+                    </time>
+                </div>
+                <Tags tags={post.frontmatter.tags} />
+            </li>
+        ))
+    }
+</ul>

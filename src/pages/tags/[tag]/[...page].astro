@@ -1,0 +1,52 @@
+---
+import { getAllTags } from '../../../utils.js'
+import BaseHead from '../../../components/BaseHead.astro'
+import Header from '../../../components/Header.astro'
+import Footer from '../../../components/Footer.astro'
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../../config'
+import ArticleList from '../../../components/ArticleList.astro'
+
+export async function getStaticPaths({ paginate }) {
+    const allPosts = (await Astro.glob('../../blog/*.{md,mdx}'))
+        .filter((page) => page.frontmatter.hide !== true)
+        .sort(
+            (a, b) =>
+                new Date(b.frontmatter.pubDate).valueOf() -
+                new Date(a.frontmatter.pubDate).valueOf()
+        )
+    const allTags = getAllTags(allPosts)
+    return allTags.map((tag) => {
+        const filterPosts = allPosts.filter((page) =>
+            page.frontmatter.tags
+                ?.map((e) => e.toLowerCase())
+                .includes(tag.toLowerCase())
+        )
+        return paginate(filterPosts, {
+            params: { tag },
+            pageSize: 100,
+        })
+    })
+}
+
+const { page } = Astro.props
+const { tag } = Astro.params
+---
+
+<!DOCTYPE html>
+<html lang="kr">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style></style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <section>
+                <h1>Tag: <span class="capital">{tag}</span></h1>
+                <hr />
+                <ArticleList posts={page.data} />
+            </section>
+        </main>
+        <Footer />
+    </body>
+</html>

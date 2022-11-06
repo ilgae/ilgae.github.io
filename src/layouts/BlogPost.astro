@@ -2,7 +2,8 @@
 import BaseHead from '../components/BaseHead.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
-import Tag from '../components/Tag.astro'
+import WriterProfileSmall from '../components/writerProfileSmall.astro'
+import Tags from '../components/Tags.astro'
 
 export interface Props {
     content: {
@@ -31,7 +32,7 @@ const {
 } = Astro.props
 ---
 
-<html lang="en">
+<html lang="kr">
     <head>
         <BaseHead title={title} description={description} />
         <style>
@@ -42,9 +43,6 @@ const {
             hr {
                 border-top: 1px solid #ddd;
                 margin: 1rem 0;
-            }
-            .tags {
-                padding: 10px 0px;
             }
         </style>
     </head>
@@ -59,11 +57,20 @@ const {
                     )
                 }
                 <h1 class="title">{title}</h1>
-                {pubDate && <time>{pubDate}</time>}
-                <div>writted by <a href={`/user/${writer}`}>{writer}</a></div>
-                <div class="tags">
-                    {tags.length && tags.map((tag) => <Tag tag={tag} />)}
+                <div class="meta_section">
+                    <WriterProfileSmall writer={writer} />
+
+                    <time datetime={pubDate}>
+                        {
+                            new Date(pubDate).toLocaleDateString('kr-KR', {
+                                year: 'numeric',
+                                month: 'numeric',
+                                day: 'numeric',
+                            })
+                        }
+                    </time>
                 </div>
+                <Tags tags={tags} />
                 {
                     updatedDate && (
                         <div>
