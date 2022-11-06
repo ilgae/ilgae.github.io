@@ -20,6 +20,6 @@ writer: 'triumph1'
 가 많았답니다.
 
 # CI가 어려운 분들을 위한 예시
-그래서 CI 가 생소하고 어려운 분들을 위해 sample 을 만들었습니다.
+그래서 CI 가 생소하고 어려운 분들을 위해 sample 을 만들었습니다! 바로 fork 해서 확인해 보실수 있어요~
 
 https://github.com/aliwo/python_continuous_Integration_sample
