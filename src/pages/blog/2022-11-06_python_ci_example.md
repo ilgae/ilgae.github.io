@@ -4,7 +4,7 @@ title: 'Python 프로젝트를 위한 Continuous Integration Sample'
 stack: 'Python'
 description: ''
 pubDate: 'Nov 06 2022'
-heroImage: '/images/placeholder/python_ci.jpeg'
+heroImage: '/images/blog/python_ci.jpeg'
 tags: ['Python']
 writer: 'triumph1'
 ---
