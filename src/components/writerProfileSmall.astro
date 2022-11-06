@@ -1,24 +1,29 @@
 ---
 export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
 
-const { tag, count } = Astro.props
+const { writer } = Astro.props
 ---
 
-<a href={`/tags/${tag}`}>
-    {tag}{count ? ` ${count}` : ''}
+<a href={`/user/${writer}`}>
+    <img src={`/images/avatar/${writer}.jpg`} alt={`${writer}`} />
+    <span>{writer}</span>
 </a>
 <style>
+    img {
+        height: 25px;
+
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+    }
     a {
-        display: inline-block;
-        padding: 0 10px;
+        display: flex;
+        max-width: fit-content;
 
         color: #666666;
         font-weight: 500;
         text-decoration: none;
-        text-transform: capitalize;
-
-        border: 1px solid #666666;
         border-radius: 10px;
+        margin-right: 10px;
     }
     a:hover {
         background-color: #dddddd;
@@ -28,6 +33,6 @@ const { tag, count } = Astro.props
         text-decoration: underline;
     }
     span {
-        font-size: 10px;
+        padding: 0 10px;
     }
 </style>

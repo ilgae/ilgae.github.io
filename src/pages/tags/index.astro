@@ -1,33 +1,27 @@
 ---
-import { getAllTags } from '../../utils.js';
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../config';
+import { getAllTags, getAllTagsWithCount } from '../../utils.js'
+import BaseHead from '../../components/BaseHead.astro'
+import Header from '../../components/Header.astro'
+import Footer from '../../components/Footer.astro'
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../config'
+import Tag from '../../components/Tag.astro'
 
-const allPosts = await Astro.glob('../blog/*.md');
-const allTags = getAllTags(allPosts);
+const allPosts = await Astro.glob('../blog/*.md')
+const allTags = getAllTagsWithCount(allPosts)
+console.log(allTags)
 
 const meta = {
     title: 'All Tags',
     description: 'All Tags from my blogs',
-};
+}
 ---
 
-<html lang='en'>
+<html lang="kr">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
         <style>
-            .title {
-                font-size: 2em;
-                margin: 0.25em 0 0;
-            }
-            hr {
-                border-top: 1px solid #ddd;
-                margin: 1rem 0;
-            }
             .tags {
-                padding: 10px 0px;
+                margin: 16px 0;
             }
         </style>
     </head>
@@ -35,21 +29,17 @@ const meta = {
     <body>
         <Header />
         <main>
-            <h1>Tags</h1>
-            <ul>
-                {
-                    Object.keys(allTags).map((tag) => (
-                        <li class='flex items-center gap-x-2'>
-                            <a
-                                href={`/tags/${tag}`}
-                                title={`View posts with the tag: ${allTags[tag]}`}
-                            >
-                                {allTags[tag]}
-                            </a>
-                        </li>
-                    ))
-                }
-            </ul>
+            <section>
+                <h1>Tags</h1>
+                <hr />
+                <div class="tags">
+                    {
+                        Object.keys(allTags).map((tag) => (
+                            <Tag tag={tag} count={allTags[tag]} />
+                        ))
+                    }
+                </div>
+            </section>
         </main>
         <Footer />
     </body>

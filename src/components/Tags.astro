@@ -1,0 +1,15 @@
+---
+import Tag from './Tag.astro'
+export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
+
+const { tags } = Astro.props
+---
+
+<div class="tags">
+    {tags.length && tags.map((tag) => <Tag tag={tag} />)}
+</div>
+<style>
+    .tags {
+        padding: 10px 0px;
+    }
+</style>

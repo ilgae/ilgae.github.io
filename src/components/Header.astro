@@ -4,18 +4,24 @@ import { SITE_TITLE } from '../config'
 ---
 
 <header>
-    <h2>
-        {SITE_TITLE}
-    </h2>
-    <nav>
-        <HeaderLink href="/">Home</HeaderLink>
-        <HeaderLink href="/blog">Blog</HeaderLink>
-        <HeaderLink href="/user">Writers</HeaderLink>
-    </nav>
+    <div class="layout">
+        <h2>
+            <a href="/">
+                {SITE_TITLE}
+            </a>
+        </h2>
+        <nav>
+            <HeaderLink href="/">Articles</HeaderLink>
+            <HeaderLink href="/tags">Tags</HeaderLink>
+            <HeaderLink href="/user">Writers</HeaderLink>
+        </nav>
+    </div>
 </header>
 <style>
     header {
         margin: 0em 0 2em;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #c9c9ca;
     }
     h2 {
         margin: 0.5em 0;
