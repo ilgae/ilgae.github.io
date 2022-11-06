@@ -5,7 +5,7 @@ stack: 'Redux'
 description: ''
 pubDate: 'Oct 25 2022'
 heroImage: '/images/placeholder/redux.jpg'
-tags: ['Redux']
+tags: ['redux']
 writer: 'dorage'
 ---
 

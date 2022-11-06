@@ -5,7 +5,7 @@ stack: 'React'
 description: ''
 pubDate: 'Oct 18 2022'
 heroImage: '/images/placeholder/react.jpg'
-tags: ['React']
+tags: ['react']
 writer: 'dorage'
 ---
 

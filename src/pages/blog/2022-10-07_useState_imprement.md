@@ -5,7 +5,7 @@ stack: 'React'
 description: ''
 pubDate: 'Oct 07 2022'
 heroImage: '/images/placeholder/react.jpg'
-tags: ['React']
+tags: ['react']
 writer: 'dorage'
 ---
 
@@ -33,36 +33,36 @@ const useState = (state) => {
 모듈 레벨의 clojure 인 것으로 추측된다.
 
 ```jsx
-let componentHooks = [];
-let currentHookIndex = 0;
+let componentHooks = []
+let currentHookIndex = 0
 
 // How useState works inside React (simplified).
 function useState(initialState) {
-    let pair = componentHooks[currentHookIndex];
+    let pair = componentHooks[currentHookIndex]
     if (pair) {
         // This is not the first render,
         // so the state pair already exists.
         // Return it and prepare for next Hook call.
-        currentHookIndex++;
-        return pair;
+        currentHookIndex++
+        return pair
     }
 
     // This is the first time we're rendering,
     // so create a state pair and store it.
-    pair = [initialState, setState];
+    pair = [initialState, setState]
 
     function setState(nextState) {
         // When the user requests a state change,
         // put the new value into the pair.
-        pair[0] = nextState;
-        updateDOM();
+        pair[0] = nextState
+        updateDOM()
     }
 
     // Store the pair for future renders
     // and prepare for the next Hook call.
-    componentHooks[currentHookIndex] = pair;
-    currentHookIndex++;
-    return pair;
+    componentHooks[currentHookIndex] = pair
+    currentHookIndex++
+    return pair
 }
 ```
 
@@ -76,8 +76,8 @@ React 라이브러리에서는 다음과 같이 구현되어 있다.
 export function useState<S>(
     initialState: (() => S) | S
 ): [S, Dispatch<BasicStateAction<S>>] {
-    const dispatcher = resolveDispatcher();
-    return dispatcher.useState(initialState);
+    const dispatcher = resolveDispatcher()
+    return dispatcher.useState(initialState)
 }
 ```
 

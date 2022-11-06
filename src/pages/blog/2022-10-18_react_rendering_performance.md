@@ -5,7 +5,7 @@ stack: 'React'
 description: ''
 pubDate: 'Oct 18 2022'
 heroImage: '/images/placeholder/react.jpg'
-tags: ['React']
+tags: ['react']
 writer: 'dorage'
 ---
 
@@ -151,7 +151,7 @@ function MemoizeCounter() {
 이는 단순히 객체의 참조를 비교하기 때문에 다음과 같은 상황이 생긴다.
 
 ```jsx
-Object.is({}, {}) === false; // true
+Object.is({}, {}) === false // true
 ```
 
 ```jsx
@@ -211,40 +211,40 @@ context는 Provider 내의 컴포넌트 트리로 context가 전파된다.
 따라서, context가 갖고 있는 값의 업데이트는 Provider 내의 모든 자식 컴포넌트 트리의 리렌더링을 야기한다.
 
 ```jsx
-const context = createContext(1);
+const context = createContext(1)
 
 function App(props) {
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = useState(0)
 
     return (
-        <div className='App'>
+        <div className="App">
             <context.Provider
                 value={{ state: { counter }, action: { setCounter } }}
             >
                 <CompA />
             </context.Provider>
         </div>
-    );
+    )
 }
 
 function CompA() {
-    console.log('render A');
-    return <CompB></CompB>;
+    console.log('render A')
+    return <CompB></CompB>
 }
 
 function CompB() {
-    console.log('render B');
-    return <CompC></CompC>;
+    console.log('render B')
+    return <CompC></CompC>
 }
 
 function CompC() {
-    console.log('render C');
+    console.log('render C')
     const {
         state: { counter },
         action: { setCounter },
-    } = useContext(context);
+    } = useContext(context)
 
-    return <button onClick={() => setCounter(counter + 1)}>setter</button>;
+    return <button onClick={() => setCounter(counter + 1)}>setter</button>
 }
 
 // render A
@@ -293,8 +293,8 @@ React.memo 에는 두 번째 인자로 직접 props를 비교할 수 있는 comp
 
 ```jsx
 React.memo(Component, (prevProps, nextProps) => {
-    return prevProps === nextProps; // 변경점이 없다면 true
-});
+    return prevProps === nextProps // 변경점이 없다면 true
+})
 ```
 
 ```jsx
