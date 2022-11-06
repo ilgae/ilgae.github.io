@@ -1,0 +1,30 @@
+---
+export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
+
+const { tag } = Astro.props;
+---
+
+<a href={'/'}>
+    {tag}
+</a>
+<style>
+    a {
+        display: inline-block;
+        padding: 0 10px;
+
+        color: #666666;
+        font-weight: 500;
+        text-decoration: none;
+
+        border: 1px solid #666666;
+        border-radius: 10px;
+    }
+    a:hover {
+        color: #333333;
+        border: 1px solid #333333;
+    }
+    a.active {
+        font-weight: bolder;
+        text-decoration: underline;
+    }
+</style>

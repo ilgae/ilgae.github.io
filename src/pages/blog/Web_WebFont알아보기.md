@@ -1,0 +1,211 @@
+---
+layout: '../../layouts/BlogPost.astro'
+title: 'Web Font 알아보기'
+stack: 'Web'
+description: ''
+pubDate: 'Nov 04 2022'
+heroImage: '/images/placeholder/web.jpg'
+tags: ['Web', 'Browser']
+writer: 'dorage'
+hide: false
+---
+
+## 참조
+
+[Optimize WebFont loading and rendering](https://web.dev/optimize-webfont-loading/)
+
+[Avoid invisible text during font loading](https://web.dev/avoid-invisible-text/)
+
+[Fundamental text and font styling - Learn web development | MDN](https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals)
+
+[글꼴에서 세리프(Serif)와 산세리프(Sans-Serif)의 차이점이 무엇일까?](https://comadevil.tistory.com/104)
+
+[NAVER D2](https://d2.naver.com/helloworld/4969726)
+
+[Controlling Font Performance with font-display - Chrome Developers](https://developer.chrome.com/blog/font-display/)
+
+## Web Safe Fonts
+
+대부분의 환경에서 지원을 하는 공통적인 폰트들로 해당 시스템이 이러한 폰트를 갖고 있을지 하는 걱정 없이 사용할 수 있는 폰트들이다.
+
+| ![Serif](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled.png) | ![Sans-Serif](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled%201.png) |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Serif                                                                | Sans-Serif                                                                    |
+
+| Name            | Generic type | Notes                                                                                                                                                                                                                                     |
+| --------------- | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Arial           | sans-serif   | It's often considered best practice to also add Helvetica as a preferred alternative to Arial as, although their font faces are almost identical, Helvetica is considered to have a nicer shape, even if Arial is more broadly available. |
+| Courier New     | monospace    | Some OSes have an alternative (possibly older) version of the Courier New font called Courier. It's considered best practice to use both with Courier New as the preferred alternative.                                                   |
+| Georgia         | serif        |                                                                                                                                                                                                                                           |
+| Times New Roman | serif        | Some OSes have an alternative (possibly older) version of the Times New Roman font called Times. It's considered best practice to use both with Times New Roman as the preferred alternative.                                             |
+| Trebuchet MS    | sans-serif   | You should be careful with using this font — it isn't widely available on mobile OSes.                                                                                                                                                    |
+| Verdana         | sans-serif   |                                                                                                                                                                                                                                           |
+
+다음 사이트에서 웹 세이프 폰트들의 목록을 확인할 수 있다.
+
+[CSS Font Stack: Web Safe and Web Font Family with HTML and CSS code.](https://www.cssfontstack.com/)
+
+## Generic Type
+
+css는 5개의 형태로 폰트를 구분한다.
+
+| Term       | Definition                                                                                                            |
+| ---------- | --------------------------------------------------------------------------------------------------------------------- |
+| serif      | Fonts that have serifs (the flourishes and other small details you see at the ends of the strokes in some typefaces). |
+| sans-serif | Fonts that don't have serifs.                                                                                         |
+| monospace  | Fonts where every character has the same width, typically used in code listings.                                      |
+| cursive    | Fonts that are intended to emulate handwriting, with flowing, connected strokes.                                      |
+| fantasy    | Fonts that are intended to be decorative.                                                                             |
+
+serif와 sans-serif, monospace의 경우 예상 가능하고 의미있는 정보를 제공해야 한다. cursive와 fantasy 타입의 경우 예측 가능성이 낮으므로 조심스럽게 사용하는 것을 권장한다.
+
+## Font Size
+
+폰트 사이즈 스타일링에 있어 3가지의 유닛을 사용한다.
+
+-   **px**
+    pixel은 절대 단위로 페이지 내 거의 모든 상황에서 동일한 계산 값을 갖는다.
+-   **em**
+    1em 은 부모 요소의 폰트 사이즈와 동일한 사이즈를 갖는다.
+    구체적으로는 부모 요소의 대문자 M의 가로너비를 1em으로 사용한다.
+-   **rem**
+    1rem 은 루트 요소의 폰트 사이즈와 동일한 사이즈를 갖는다.
+    다만 rem은 Internet Explorer 8과 그 하위 버전에서는 지원하지 않으므로 구 브라우저를 지원하는 경우 주의해야 한다.
+
+```html
+<!-- document base font-size is 16px -->
+<article>
+    <!-- If my font-size is 1.5em -->
+    <p>My paragraph</p>
+    <!-- ?? -->
+</article>
+```
+
+위와 같이 em을 사용한 경우 article은 24px의 폰트 사이즈를 갖게 된다.
+
+만약 여기서 p의 폰트 사이즈를 20px로 맞추고 싶다면, p의 폰트 사이즈는 0.83333… em 을 설정해주어야 한다. 이처럼 em으로 사이징을 할 경우 어려움이 있을 수 있다. 따라서 rem을 사용해주는 것이 좋다.
+
+## Rendering Process
+
+![Untitled](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled%202.png)
+
+font는 언제 렌더링 되는가?
+
+1. HTTP 요청을 통해 html을 받아온다.
+2. HTML 파싱 과정을 거쳐 DOM을 구성한다
+3. HTML 파싱 중 만난 CSS 리소스를 요청하고 CSS를 받아온다.
+4. CSS 파싱 과정을 거쳐 CSSOM을 구성한다
+5. DOM과 CSSOM을 결합하여 렌더트리를 구성한다.
+6. 레이아웃과 페인트를 진행한다.
+
+폰트의 요청은 렌더트리를 구성하는 5번 시점에서 비동기적으로 진행된다.
+
+그렇기에 동시에 브라우저는 레이아웃을 수행하고 페인트 과정을 거쳐 화면에 요소들을 그리는데 글꼴의 응답이 완료되지 않아 아직 사용할 수 없는 경우 브라우저에서는 텍스트 픽셀을 렌더링 하지 못할 수 있다.
+
+preload 어트리뷰트를 통해 리소스의 우선순위를 지정하거나 font-display CSS 를 이용해 해결할 수 있다.
+
+[font-display - CSS&colon; Cascading Style Sheets | MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display)
+
+## Preload WebFont Resoures
+
+만약 구체적인 WebFont 가 호스팅 된 URL을 알고 있다면,
+
+```html
+<link rel="”preload”" />
+```
+
+어트리뷰트를 통해 리소스 우선순위를 줄 수 있고, 이는 CSSOM이 구성되기 이전에 웹 폰트를 요청하게 만든다.
+
+## FOIT & FOUT
+
+브라우저에 따라 아직 로드되지 않은 글꼴을 처리하는 방법이 2가지가 있다.
+
+글꼴이 로드가 되고 변경점이 적용될 때 글자가 번쩍- 하고 바뀐다 해서 Flash Of Something Text라고 한다.
+
+-   **FOUT (Flash Of Unstyled Text)**
+    Internet Explorer 계열의 브라우저가 이에 해당한다.
+    글꼴이 로드되기 전까지 시스템 글꼴로 텍스트 컨텐츠를 표시하고, 글꼴이 로드가 완료되면 글꼴을 적용하는 방식이다.
+-   **FOIT (Flash Of Invisible Text)**
+    Chrome 계열의 브라우저가 이에 해당한다.
+    글꼴이 로드되기 전까지 텍스트 컨텐츠를 숨긴다.
+
+## **Differences In Font Rendering**
+
+| Browser           | Timeout    | Fallback | Swap |
+| ----------------- | ---------- | -------- | ---- |
+| Chrome 35+        | 3 seconds  | Yes      | Yes  |
+| Opera             | 3 seconds  | Yes      | Yes  |
+| Firefox           | 3 seconds  | Yes      | Yes  |
+| Internet Explorer | 0 seconds  | Yes      | Yes  |
+| Safari            | No timeout | N/A      | N/A  |
+
+-   크롬과 오페라, 파이어폭스는 3초의 timeout 을 갖는다. 이는 fallback font 가 나타나기 전까지 대기 시간이다. 글꼴이 이 timeout 이내에 다운로드되면 텍스트가 해당 글꼴로 다시 렌더링 된다.
+-   인터넷 익스플로어는 FOUT 방식으로 항상 즉시 시스템 글꼴로 텍스트를 렌더링 하므로 timeout이 0초이다.
+-   사파리는 timout 이 없다.
+
+## Customize The Text Rendering Delay
+
+font-display는 폰트 다운로드의 생명 주기를 3개의 주요한 구간으로 나눈다.
+
+-   **font block period**
+    글꼴이 아직 로드되지 않은 상태이다. 이 글꼴을 사용하는 요소들은 아무것도 보이지 않는 invisible fallback font face로 렌더링 된다. 만약 글꼴이 이 구간에서 로드가 완료된다면, 글꼴이 정상적으로 사용될 것이다.
+-   **font swap period**
+    font block period 이후의 구간이다. 이 구간에서도 글꼴이 로드되지 않았다면 여전히 fallback font face로 렌더링을 하게 된다. 만약 이 구간에서 로드가 완료된다면, 글꼴이 정상적으로 사용될 것이다.
+-   **font failure period**
+    font swap period 이후의 구간이다. 만약 아직도 글꼴이 로드되지 않았다면, 이는 실패로 표시되고 normal font fallback이 발생한다. 그렇지 않다면 글꼴이 정상적으로 사용된다.
+
+이 구간들을 이해하는 것은 font-display를 통해 내가 어떻게 글꼴의 렌더링을 조정할 수 있을지 알게 한다. 또한, font-display를 이용하려면 @font-face를 사용해야 한다.
+
+```css
+@font-face {
+  font-family: 'Awesome Font';
+  font-style: normal;
+  font-weight: 400;
+  **font-display: auto; /* or block, swap, fallback, optional */**
+  src: local('Awesome Font'),
+       url('/fonts/awesome-l.woff2') format('woff2'), /* will be preloaded */
+       url('/fonts/awesome-l.woff') format('woff'),
+       url('/fonts/awesome-l.ttf') format('truetype'),
+       url('/fonts/awesome-l.eot') format('embedded-opentype');
+  unicode-range: U+000-5FF; /* Latin glyphs */
+}
+```
+
+## CSS Font-Display
+
+아래는 font-display의 속성 별 동작 방식이다.
+
+-   **auto**
+    이는 user-agent 가 사용하는 font-display 전략을 그대로 사용하는 것이다. 대부분의 브라우저는 **block** 을 기본 전략으로 사용한다.
+-   **block**
+    ![Untitled](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled%203.png)
+    짧은 timeout의 **block period** (대부분 최대 3초)를 갖는다. 그리고 무한한 **swap period** 를 갖는다. 이 뜻은 브라우저는 보이지 않는 텍스트를 먼저 그리고 폰트가 로드되는 대로 교체를 하여 렌더링을 진행한다.
+-   **swap**
+    ![Untitled](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled%204.png)
+    이는 **block period**를 갖지 않고 바로 fallback fontface 로 텍스트를 렌더링 한다. 그리고 무한한 **swap period**를 갖는다. 이 또한 폰트가 로드되는 대로 폰트를 교체하여 렌더링을 진행한다. 이는 항상 중요한 글자를 렌더링 할 때 사용해야 한다. (예를 들면 로고) 또한 이러한 사고가 있었다고 한다.
+    ![Untitled](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled%205.png)
+    Not을 강조하기 위해 웹 폰트를 지정했지만 로딩이 지연되면서 Not이 빠져서 표기된 것이다. 이러한 문제를 방지하기 위해 swap을 사용해야 한다.
+    _[해당사건]_ [https://www.zachleat.com/web/mitt-romney-webfont-problem/](https://www.zachleat.com/web/mitt-romney-webfont-problem/)
+-   **fallback**
+    100ms 정도 혹은 그보다 더 짧은 **block period** 를 갖고, 이후에 약 3초 간 짧은 **swap period** 를 갖는다. 즉 아주 짧은 시간의 폰트 공백 현상이 발생하고 이 후에는 fallback font로 렌더링이 된다. 만약 **swap period** 안에 로딩이 완료된다면 웹 폰트로 전환된다. 하지만 이 시간이 지나서 다운로드가 완료되어도 fallback font를 그대로 사용하고 다운로드된 글꼴은 캐시에 저장된다. 이는 다음 방문 시에 사용된다.
+-   **optional**
+    ![Untitled](/images/blog/b8b99f1cbe544818989b16f8cec365f6/Untitled%206.png)
+    fallback과 같은 시간의 **block period**를 갖는다. 그리고 0초의 **swap period** 를 갖는다. 글꼴이 있어도 그만 없어도 그만 일 때 사용한다. **fallback** 옵션과의 차이점은 브라우저가 네트워크의 상태를 파악해 글꼴의 다운로드를 시작할지 말지 결정을 한다. 이는 사용자의 네트워크 연결이 좋지 못할 때, 폰트를 가져오는 것이 좋지 못한 선택 일 때를 파악해서 브라우저가 선택한다.
+
+## Font Loading API
+
+<link rel=”preload”> 와 font-display를 동시에 사용하는 것은 오버헤드 없이 글꼴 로딩과 렌더링을 조정 하는데 있어서 아주 좋은 선택이다.
+
+하지만 조금 더 커스텀하거나 이를 위해 기꺼이 오버헤드를 감수하겠다면, Font Loading API를 사용할 수 있다.
+
+Font Loading API는 CSS font faces 조작, 다운로드 상태 추적, 기본 lazyload 행위의 오버라이드 등을 할 수 있다.
+
+[CSS Font Loading API - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Font_Loading_API)
+
+## Chaching Fonts
+
+글꼴 리소스는 기본적으로 거의 업데이트가 일어나지 않는 정적인 리소스다. 따라서 서버가 지정할 수 있는 최대의 max-age를 주어도 상관이 없다.
+
+약 웹 서비스가 service worker를 사용한다면, [cache-first startegy](https://web.dev/i18n/en/offline-cookbook/#cache-then-network)으로 폰트를 전달하는 것이 대부분 사용 사례에서 적절하다.
+
+하지만 localStorage나 IndexedDB를 통해 글꼴을 저장해서는 안된다. 이는 성능 상의 문제점이 있다. 브라우저의 HTTP 캐시가 글꼴 리소스를 전달하는데 최고의 메커니즘을 제공한다.

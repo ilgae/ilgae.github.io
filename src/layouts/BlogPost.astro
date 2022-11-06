@@ -1,0 +1,88 @@
+---
+import BaseHead from '../components/BaseHead.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import Tag from '../components/Tag.astro'
+
+export interface Props {
+    content: {
+        title: string
+        description: string
+        pubDate?: string
+        updatedDate?: string
+        heroImage?: string
+        tags?: string[]
+        stack?: string
+        writer?: string
+    }
+}
+
+const {
+    content: {
+        title,
+        description,
+        pubDate,
+        updatedDate,
+        heroImage,
+        tags,
+        stack,
+        writer,
+    },
+} = Astro.props
+---
+
+<html lang="en">
+    <head>
+        <BaseHead title={title} description={description} />
+        <style>
+            .title {
+                font-size: 2em;
+                margin: 0.25em 0 0;
+            }
+            hr {
+                border-top: 1px solid #ddd;
+                margin: 1rem 0;
+            }
+            .tags {
+                padding: 10px 0px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <Header />
+        <main>
+            <article>
+                {
+                    heroImage && (
+                        <img width={720} height={360} src={heroImage} alt="" />
+                    )
+                }
+                <h1 class="title">{title}</h1>
+                {pubDate && <time>{pubDate}</time>}
+                <div>writted by <a href={`/user/${writer}`}>{writer}</a></div>
+                <div class="tags">
+                    {tags.length && tags.map((tag) => <Tag tag={tag} />)}
+                </div>
+                {
+                    updatedDate && (
+                        <div>
+                            Last updated on <time>{updatedDate}</time>
+                        </div>
+                    )
+                }
+                <hr />
+                <slot />
+            </article>
+            <script
+                src="https://utteranc.es/client.js"
+                repo="dorage/dorage.github.io"
+                issue-term="og:title"
+                theme="preferred-color-scheme"
+                crossorigin="anonymous"
+                async
+            ></script>
+        </main>
+        <Footer />
+    </body>
+</html>
