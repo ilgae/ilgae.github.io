@@ -1,11 +1,11 @@
 ---
 export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
 
-const { tag, count } = Astro.props
+const { tag, multiline } = Astro.props
 ---
 
-<a href={`/tags/${tag}`}>
-    {tag}{count ? ` ${count}` : ''}
+<a class={multiline ? 'multiline' : ''} href={`/tags/${tag}`}>
+    {tag}
 </a>
 <style>
     a {
@@ -17,8 +17,11 @@ const { tag, count } = Astro.props
         text-decoration: none;
         text-transform: capitalize;
 
-        border: 1px solid #666666;
+        border: 1px solid #dddddd;
         border-radius: 10px;
+    }
+    a.multiline {
+        margin: 4px 0;
     }
     a:hover {
         background-color: #dddddd;

@@ -23,6 +23,9 @@ const meta = {
             .tags {
                 margin: 16px 0;
             }
+            .margin {
+                margin: 4px 0;
+            }
         </style>
     </head>
 
@@ -35,7 +38,7 @@ const meta = {
                 <div class="tags">
                     {
                         Object.keys(allTags).map((tag) => (
-                            <Tag tag={tag} count={allTags[tag]} />
+                            <Tag tag={tag} multiline={true} />
                         ))
                     }
                 </div>
