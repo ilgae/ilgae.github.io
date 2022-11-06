@@ -1,6 +1,6 @@
 ---
-import HeaderLink from './HeaderLink.astro';
-import { SITE_TITLE } from '../config';
+import HeaderLink from './HeaderLink.astro'
+import { SITE_TITLE } from '../config'
 ---
 
 <header>
@@ -8,8 +8,9 @@ import { SITE_TITLE } from '../config';
         {SITE_TITLE}
     </h2>
     <nav>
-        <HeaderLink href='/'>Home</HeaderLink>
-        <HeaderLink href='/blog'>Blog</HeaderLink>
+        <HeaderLink href="/">Home</HeaderLink>
+        <HeaderLink href="/blog">Blog</HeaderLink>
+        <HeaderLink href="/user">Writers</HeaderLink>
     </nav>
 </header>
 <style>

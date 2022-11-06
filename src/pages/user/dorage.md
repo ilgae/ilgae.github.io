@@ -1,6 +1,8 @@
 ---
-layout: "../../layouts/index.astro"
-description: ""
+layout: '../../layouts/index.astro'
+title: 'dorage'
+domain: 'front-end'
+description: ''
 ---
 
 # 👾 Hello, I'm KangHyun Lee
