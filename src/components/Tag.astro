@@ -1,7 +1,7 @@
 ---
 export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
 
-const { tag, multiline } = Astro.props
+const { tag, multiline } = Astro.props;
 ---
 
 <a class={multiline ? 'multiline' : ''} href={`/tags/${tag}`}>

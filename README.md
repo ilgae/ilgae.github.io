@@ -11,8 +11,8 @@
 
 ### RULE
 
-<strong>Markdown 내의 Metadata 관련</strong>
+<strong>Metadata</strong>
 
 -   stack 소문자로 작성
--   tags는 모두 소문자로 작성하기
--   hide가 true면 숨겨짐
+-   tags 소문자로 작성
+-   draft = true 면 publish 되지 않음

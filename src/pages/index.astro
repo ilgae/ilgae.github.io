@@ -1,21 +1,17 @@
 ---
-import BaseHead from '../components/BaseHead.astro'
-import Header from '../components/Header.astro'
-import Footer from '../components/Footer.astro'
-import WriterProfileSmall from '../components/writerProfileSmall.astro'
-import Tags from '../components/Tags.astro'
-import ArticleList from '../components/ArticleList.astro'
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ArticleList from '../components/ArticleList.astro';
 
-import { SITE_TITLE, SITE_DESCRIPTION } from '../config'
+import { SITE_TITLE, SITE_DESCRIPTION } from '../config';
 
 // Use Astro.glob() to fetch all posts, and then sort them by date.
-const posts = (await Astro.glob('./blog/*.{md,mdx}'))
-    .filter((page) => page.frontmatter.hide !== true)
-    .sort(
-        (a, b) =>
-            new Date(b.frontmatter.pubDate).valueOf() -
-            new Date(a.frontmatter.pubDate).valueOf()
-    )
+const posts = (await Astro.glob('./blog/*.{md,mdx}')).sort(
+    (a, b) =>
+        new Date(b.frontmatter.pubDate).valueOf() -
+        new Date(a.frontmatter.pubDate).valueOf()
+);
 ---
 
 <!DOCTYPE html>

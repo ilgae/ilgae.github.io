@@ -1,0 +1,79 @@
+---
+export interface Props extends astroHTML.JSX.AnchorHTMLAttributes {}
+
+const { url, title, description, image } = Astro.props;
+---
+
+<a href={url} target="_blank" class="notion_bookmark">
+    <div class="notion_bookmark-info">
+        <div class="notion_bookmark-info-title">
+            {title}
+        </div>
+        <div class="notion_bookmark-info-description">
+            {description}
+        </div>
+        <div class="notion_bookmark-info-description">
+            {url}
+        </div>
+    </div>
+    <div
+        class="notion_bookmark-thumbnail"
+        style={`background-image:url(${image})`}
+    >
+    </div>
+</a>
+<style>
+    .notion_bookmark {
+        display: flex;
+        height: 100px;
+        margin: 8px 0;
+
+        background-color: #eeeeee;
+        border: 1px solid #dddddd;
+        border-radius: 10px;
+
+        box-sizing: border-box;
+    }
+    .notion_bookmark-info {
+        flex-direction: column;
+        width: 70%;
+        padding: 8px;
+        padding-right: 16px;
+
+        overflow: hidden;
+    }
+    .notion_bookmark-info-title {
+        height: 20%;
+        font-size: 14px;
+        width: 100%;
+        margin-bottom: 8px;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        font-weight: 700;
+    }
+    .notion_bookmark-info-description {
+        height: 50%;
+        font-size: 10px;
+        margin-bottom: 8px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .notion_bookmark-info-url {
+        height: 10%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .notion_bookmark-thumbnail {
+        width: 30%;
+        height: 100%;
+
+        background-size: cover;
+        background-position: center;
+        border-radius: 00px 10px 10px 0;
+    }
+</style>

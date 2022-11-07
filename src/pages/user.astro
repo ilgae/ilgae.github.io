@@ -29,7 +29,7 @@ const users = await Astro.glob('./user/*.{md,mdx}')
             ul li a:visited {
                 color: #8e32dc;
             }
-            img {
+            .user-avatar {
                 width: 100px;
                 height: 100px;
                 aspect-ratio: 1/1;
@@ -83,7 +83,10 @@ const users = await Astro.glob('./user/*.{md,mdx}')
                         users.map(
                             ({ frontmatter: { title, github, domain } }) => (
                                 <div class="user">
-                                    <img src={`/images/avatar/${title}.jpg`} />
+                                    <img
+                                        class="user-avatar"
+                                        src={`/images/avatar/${title}.jpg`}
+                                    />
                                     <div class="profile">
                                         <p>
                                             <span class="title">{title}</span>{' '}

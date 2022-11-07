@@ -91,6 +91,9 @@ blockquote {
 article {
     margin-bottom: 50px;
 }
+img {
+    width: 100%;
+}
 
 .meta_section {
     display: flex;
