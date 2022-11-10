@@ -42,3 +42,13 @@ const { title, description, image = '/placeholder-social.jpg' } = Astro.props;
     name='google-site-verification'
     content='TqxzuIgUkchIyvjcqmWv2roPP4cWsXDRTEJDvMn5U6E'
 />
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P6EYCB787M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P6EYCB787M');
+</script>
