@@ -4,7 +4,7 @@ title: 'Redis 와 pickle 을 같이 사용할 떄 주의할 점'
 stack: 'Python'
 description: ''
 pubDate: 'Nov 13 2022'
-heroImage: '/images/blog/python_ci.jpeg'
+heroImage: '/images/blog/redis.png'
 tags: ['python', 'pickle', 'redis'']
 writer: 'triumph1'
 ---
