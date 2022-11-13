@@ -72,7 +72,7 @@ redis = Redis.from_url("redis://localhost:6379")
 
 async def main() -> None:
     cache = await redis.get("hi")
-    print(pickle.loads(cache).age if cache else "못 찾음")  # 27 출력
+    print(pickle.loads(cache).age if cache else "못 찾음")  # ModuleNotFoundError 에러!
 
 asyncio.run(main())
 ```
