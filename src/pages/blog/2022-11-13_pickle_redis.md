@@ -5,7 +5,7 @@ stack: 'Python'
 description: ''
 pubDate: 'Nov 13 2022'
 heroImage: '/images/blog/redis.png'
-tags: ['python', 'pickle', 'redis'']
+tags: ['python', 'pickle', 'redis']
 writer: 'triumph1'
 ---
 
