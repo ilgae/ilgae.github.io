@@ -2,24 +2,48 @@
 layout: '../../layouts/BlogPost.astro'
 title: 'Formik 으로 체크박스 만들기'
 stack: 'formik'
-description: ''
+description: 'Formik의 useField 훅을 이용해 확장을 시킬 수 있는 예제입니다.'
 pubDate: 'Nov 20 2022'
 heroImage: '/images/blog/2022-11-20_formik/formik.png'
 tags: ['formik', 'react', 'form']
 writer: 'dorage'
 ---
 
+import NotionBookmark from '../../components/NotionBookmark.astro';
+
 첫 직장에서 커리어를 시작한지 1주일이 되었다.
 
 현재 백오피스와 클라이언트에서 Form을 구현할 때, Formik 이라는 라이브러리를 사용하고 있다.
 
-생각보다 API도 적으면서 확장성도 상당히 좋다는 생각이 들었던 라이브러리 였다.
+도큐먼트를 읽어보니 API도 적으면서 확장성도 상당히 좋은 라이브러리라는 생각이 들었다.
 
 특히 useField를 사용하면 사용자의 모든 인풋 과정 전체를 관리하는 일을 할 수 있는 라이브러리인 것 같다는 생각이 들었다.
 
-그래서 이 주의 useField를 이용해서 구현하였던 백오피스의 기능과 클라이언트 단에 다른 방식으로 구현이 되었지만 Formik을 이용해 구현했으면 괜찮았을것 같은 기능을 간단히 구현해 보았다.
+그래서 이 주의 useField를 이용해서 구현하였던 백오피스의 기능을 간단히 구현해 보았다.
+
+또한, 클라이언트 단에서는 Recoil을 통해 관리되고 있지만 Formik을 이용해 구현했으면 좋았을 것 같은 기능을 Formik을 통해 간단히 구현해 보았다.
+
+---
 
 ## 체크박스
+
+처음 받은 업무로 백오피스에서 현재 등록된 상품과 스크래핑된 상품 데이터를 매칭시킬 수 있는 페이지를 제작하는 업무를 배정받았다.
+
+여러 가지 상품을 동시에 선택하고 submit을 하면 해당 상품 id들을 서버로 패칭하는 방식의 페이지였다.
+
+이를 <code>useField(name:string)</code>를 이용해 <code>helper.setValue</code> 를 통해 set에 id를 저장하는 방식으로 구현했다.
+
+```js
+const [field, meta, helper] = useField(fieldName);
+
+const onClickSomething() {
+    ...
+    helper.setValue(new Set([...field.value, newId]));
+    ...
+}
+```
+
+만약 최소 1개 이상이 선택이 되었을 때만을 검증하기 위해선 yup을 이용해 <code>yup.array().min(1, "최소 1개는 선택해야 합니다.")</code> 와 같은 validationSchema을 주는 것으로 검증이 가능하다.
 
 <iframe
     src="https://codesandbox.io/embed/formik-checkbox-example-forked-f0ipwy?fontsize=14&hidenavigation=1&theme=dark"
@@ -29,9 +53,21 @@ writer: 'dorage'
     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
 ></iframe>
 
-최소 1개 이상이 선택이 되었을 때만을 검증하기 위해선 yup을 이용해 <code>yup.array().min(1, "최소 1개는 선택해야 합니다.")</code> 와 같은 validationSchema을 주는 것으로 검증이 가능하다.
+---
 
 ## 이미지 위에 점 찍기
+
+사용자가 이미지를 업로드하고 그 위에 상품을 태그하는 기능이 구현중이였다.
+
+마치 인스타그램에 있는 그러한 기능이다.
+
+![인스타그램의 태그 기능](/images/blog/2022-11-20_formik/tag_on_img.jpg)
+
+해당 기능은 현재 Recoil로 상태를 관리하고 있다.
+
+그래도 Formik으로 전체과정을 관리하고 있는데 그 사이에 Recoil로 상태를 따로 관리한다는 점이 조금 마음에 들지 않았다.
+
+다음과 같이 Formik을 통해 구현하면 좋지 않을까라는 생각이 들어서 Formik을 이용해 간단하게 구현해보았다.
 
 <iframe
     src="https://codesandbox.io/embed/formik-pin-on-image-33r32s?fontsize=14&hidenavigation=1&theme=dark"
@@ -41,8 +77,32 @@ writer: 'dorage'
     sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
 ></iframe>
 
+---
+
 ## 결론
 
-굳이 이 하나 하나를 위해서는 Formik이 필요한지에 대해는 당연히 의문이 들지만,
+굳이 이 하나 하나를 위해서는 Formik이 필요한지에 대하여는 당연히 의미가 없다고 생각을 한다.
 
-만약 폼 한 부분에 input으로 커버할 수 없는 다른 사용자의 인풋을 입력받고 싶다면, 훅을 이용해 얼마든지 확장이 가능하다는 점이 중요한 것 같다는 생각이 들었다.
+하지만, 만약 폼 한 부분에서 HTML의 기존 input으로 커버할 수 없는 다른 사용자의 인풋을 입력받고 싶다면, 훅을 이용해 얼마든지 확장이 가능하다는 점을 생각해주면 좋을 것 같다.
+
+---
+
+## 참조
+
+<NotionBookmark
+    title={'FORMIK DOCS'}
+    description={'Build forms in React, without the tears'}
+    url={'https://formik.org/'}
+/>
+<NotionBookmark
+    title={'FORMIK DOCS - useField()'}
+    description={
+        'useField is a custom React hook that will automagically help you hook up inputs to Formik'
+    }
+    url={'https://formik.org/docs/api/useField'}
+/>
+<NotionBookmark
+    title={'NPM - yup'}
+    description={'validation을 위한 javascript schema 빌더 입니다'}
+    url={'https://www.npmjs.com/package/yup'}
+/>

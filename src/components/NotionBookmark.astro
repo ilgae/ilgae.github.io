@@ -18,7 +18,9 @@ const { url, title, description, image } = Astro.props;
     </div>
     <div
         class="notion_bookmark-thumbnail"
-        style={`background-image:url(${image})`}
+        style={`background-image:url(${
+            image ?? '/images/placeholder/external-link.jpg'
+        })`}
     >
     </div>
 </a>
@@ -43,7 +45,7 @@ const { url, title, description, image } = Astro.props;
         overflow: hidden;
     }
     .notion_bookmark-info-title {
-        height: 20%;
+        height: 25%;
         font-size: 14px;
         width: 100%;
         margin-bottom: 8px;
@@ -55,7 +57,7 @@ const { url, title, description, image } = Astro.props;
         font-weight: 700;
     }
     .notion_bookmark-info-description {
-        height: 50%;
+        height: 45%;
         font-size: 10px;
         margin-bottom: 8px;
 
