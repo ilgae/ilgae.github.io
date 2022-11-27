@@ -1,0 +1,213 @@
+---
+layout: '../../layouts/BlogPost.astro'
+title: 'Nice Modal과 React Transition Group으로 이쁘게 모달 띄우기'
+stack: 'React'
+description: 'Nice Modal로 모달 띄우기. React Transition Group으로 애니메이션 추가하기. query-string을 이용해 url쿼리를 상태로 관리하기'
+pubDate: 'Nov 27 2022'
+heroImage: '/images/blog/2022-11-27_modal_transition/ezgif.com-gif-maker.webp'
+tags: ['react', 'modal', 'dialog']
+writer: 'dorage'
+---
+
+새로운 직장에서의 또 한 주가 지나갔다.
+
+이번 주에는 상품 페이지 내의 상품을 필터링 하는 부분을 맡았다.
+
+어떻게 보면 단순하지만, 기존에 있던 다이얼로그를 띄우는 방식이라던지, 다이얼로그의 동작 방식이 변경되는 부분들을 새로 만들게 되었다.
+
+## 요구사항
+
+-   필터를 입력 받을 다이얼로그가 있어야 한다
+
+-   다이얼로그가 열리고 닫힐 때, 애니메이션이 있다
+
+-   다이얼로그가 열려 있을 때, 뒤로가기 할 경우, 다이얼로그가 닫혀야 한다
+
+-   필터는 쿼리로 url에 남아있어야 한다
+
+## 기존에 있던 문제점
+
+-   다이얼로그가 열릴 때 애니메이션이 발생. 하지만, 닫힐때 애니메이션이 없음
+
+-   다이얼로그가 열려있을 때 뒤로가기를 하면 다이얼로그가 꺼지지 않고 페이지만 뒤로가기 됨
+
+-   url의 query가 한 페이지에서 여러 컴포넌트에 필요한 경우가 처음 생김
+
+## 만들 것
+
+여기서 다시 만드는것은 뒤로가기 할 경우, 다이얼로그가 닫히는 부분까지이다.
+
+다이얼로그가 닫히는 부분을 구현하기 위해 url에 query를 붙히는 방식을 선택했다.
+
+아래는 그 예제이다.
+
+코드 샌드박스 내에서는 뒤로가기가 제대로 동작하지 않을 것 같아서 모달내에 고백 버튼을 추가로 넣어주었다.
+
+<iframe
+    src="https://codesandbox.io/embed/nice-modal-react-with-react-transition-group-gin1pq?fontsize=14&hidenavigation=1&theme=dark"
+    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+    title="Nice-Modal-React-with-React-Transition-Group"
+    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+## 사용한 라이브러리
+
+-   [@ebay/nice-modal-react](https://www.npmjs.com/package/@ebay/nice-modal-react)
+
+    새롭게 도입한 라이브러리<br/>가볍고 구조가 간단하다는 생각이 들어 사용하게 되었다
+
+-   [react-transition-group](https://www.npmjs.com/package/react-transition-group)
+
+    기존 프로젝트에서 사용하고 있던 라이브러리<br/>CSS 애니메이션을 위해 사용하고 있다
+
+-   [query-string](https://www.npmjs.com/package/query-string)
+
+    기존 프로젝트에서 사용하고 있던 라이브러리<br/>url에 현재 상태를 표현하기 위해 query를 붙힐 때 사용하고 있다
+
+## 해결과정
+
+가장 먼저 모달을 만드는 것을 목표로 삼았다.
+
+[@ebay/nice-modal-react](https://www.npmjs.com/package/@ebay/nice-modal-react)을 이용하여 기본적인 모달의 모습을 잡아주었다.
+
+<iframe
+    src="https://codesandbox.io/embed/nice-modal-react-with-react-transition-group-modal-wanryo-sxi2bj?fontsize=14&hidenavigation=1&theme=dark"
+    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+    title="Nice-Modal-React-with-React-Transition-Group_모달 완료"
+    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+아주 잘 작동하는 걸로 확인이 된다.
+
+이제 여기에 [react-transition-group](https://www.npmjs.com/package/react-transition-group)을 사용하여 애니메이션을 추가해주었다.
+
+덤으로 스크롤링을 방지하기 위해 body의 overflow css를 조정하는 코드도 추가하였다.
+
+nicemodal 의 useModal 훅은 현재 모달의 상태와 상태를 조정할 수 있는 메서드들을 제공한다.
+
+Transition의 in 프롭스에는 현재 모달을 표현하는 상태인 visible 프로퍼티를 사용했다.
+
+만약 배경화면이나 버튼을 클릭하면 훅이 제공하는 hide() 메서드로 visible을 false로 변경하고, exit 트랜지션이 시작된다.
+
+트랜지션이 모두 종료되면, remove()메서도로 모달을 완전히 언마운트하는 onExited 핸들러가 실행된다.
+
+<strong>components/modals/OkModal.js</strong>
+
+```js
+const onExited = () => {
+document.body.style.overflowY = "unset";
+modal.remove();
+};
+
+...
+
+<Transition timeout={DURATION} in={modal.visible} onExited={onExited}>
+```
+
+<iframe
+    src="https://codesandbox.io/embed/nice-modal-react-with-react-transition-group-transitioncuga-tydk05?fontsize=14&hidenavigation=1&theme=dark"
+    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+    title="Nice-Modal-React-with-React-Transition-Group_transition추가"
+    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
+
+애니메이션이 잘 작동하는 걸 볼 수 있다.
+
+이제 마지막으로 뒤로가기시 종료가 되게끔 만들면 끝이다
+
+모달의 뒤로가기는 url의 쿼리를 변경하고, 이 url의 변경점을 계속해서 감시하면서, url내의 모달과 관련된 쿼리가 없다면 모달을 종료하는 방식으로 만들었다.
+
+다음과 같이 일정주기로 url을 체크하는 함수와 이를 바탕으로 업데이트를 일으키는 훅을 만들었다.
+
+실제 프로젝트에서는 쿼리를 관리하는 컨텍스트를 하나 만들어서 그 안에서 모두 관리하게끔 만들었다.
+
+<strong>functions/hrefChecker.js</strong>
+
+```js
+// 일정주기마다 href을 검사해서 바뀌었다면 callback을 호출합니다
+// 현재는300ms 마다 체크를 하게 만들어 두었습니다.
+const ms = 300;
+
+const urlChecker = () => {
+    let callback;
+    let prevHref = '';
+
+    setInterval(() => {
+        const currHref = window.location.href;
+        if (currHref === prevHref) return;
+        prevHref = currHref;
+        if (callback) callback();
+    }, ms);
+
+    return (cb) => {
+        callback = cb;
+    };
+};
+
+const URLChecker = urlChecker();
+
+export default URLChecker;
+```
+
+<strong>components/hooks/useHrefChecker.js</strong>
+
+```js import {(useLayoutEffect, useState)} from 'react'; import HrefChecker from
+'../../functions/HrefChecker';
+
+// href의 변경점이 있으면 업데이트 되는 훅입니다
+export const useHrefChecker = () => {
+    const [change, setChange] = useState({});
+
+    useLayoutEffect(() => {
+        // 오브젝트 리터럴을 setter에 넘기는 것으로
+        // 콜백이 호출될 때 마다, 항상 state의 업데이트가 일어납니다
+        HrefChecker(() => {
+            setChange({});
+        });
+    }, []);
+
+    return change;
+};
+```
+
+이제 모달 코드에서 실제 모달이 열릴 때, url에 쿼리를 추가한다.
+
+또한, url에 변경점이 생기면 모달과 관련된 쿼리를 확인하고 변경점을 적용하는 코드도 추가한다.
+
+<strong>components/modals/OkModal.js</strong>
+
+```js
+// 모달이 떴을 때
+useEffect(() => {
+    // 모달이 떴을 때, 스크롤을 방지
+    document.body.style.overflowY = 'hidden';
+    // 모달이 떴을 때, url에 query 추가
+    const url = new URL(window.location.href);
+    url.searchParams.set(PARAM_NAME, true);
+    window.history.pushState({}, '', url.search);
+}, []);
+
+// url이 변경되었을 때,
+useEffect(() => {
+    const url = new URL(window.location.href);
+    // url이 변경되었을 때, 여전히 쿼리에 남아있다면
+    // 그냥 반환합니다
+    if (url.searchParams.has(PARAM_NAME)) return;
+    // 쿼리에 현재 모달에 관련된 query가 없다면
+    // 모달을 닫는 과정을 시작합니다
+    close();
+}, [hrefChange]);
+```
+
+이로써 요구사항을 모두 만족하는 모달을 만들었다.
+
+<iframe
+    src="https://codesandbox.io/embed/nice-modal-react-with-react-transition-group-gin1pq?fontsize=14&hidenavigation=1&theme=dark"
+    style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+    title="Nice-Modal-React-with-React-Transition-Group"
+    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
