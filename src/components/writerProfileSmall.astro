@@ -5,15 +5,17 @@ const { writer } = Astro.props;
 ---
 
 <a href={`/user/${writer}`}>
-    <img
-        class="writer_profile_small-avatar"
-        src={`/images/avatar/${writer}.jpg`}
-        alt={`${writer}`}
-    />
+    <div>
+        <img
+            class="writer_profile_small-avatar"
+            src={`/images/avatar/${writer}.jpg`}
+            alt={`${writer}`}
+        />
+    </div>
     <span>{writer}</span>
 </a>
 <style>
-    img {
+    .writer_profile_small-avatar {
         margin-left: 5px;
         width: 25px;
         height: 25px;
